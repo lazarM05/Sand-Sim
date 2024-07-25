@@ -12,6 +12,7 @@ class Particle():
         self.size = size
         self.rect = pygame.Rect(x,y,size,size)
         
+        self.cell_index = (x//size, y//size)
         
         
         if self.type == 0:
@@ -24,18 +25,20 @@ class Particle():
     
     
     def update(self, grid):
-        
         self.state = 1
-        
         stable=0
-       
-        for particle in grid.particle_list:
+        neigbours = self.get_neighbours(grid)
+        
+        
+        
+        for particle in neigbours:
+            
             # particle on top
             if self.rect.bottomleft==particle.rect.topleft and particle.state == 0 and particle!=self:
                 
-                if any(particle.rect.topleft == p.rect.topright and p!=particle  for p in grid.particle_list):
+                if any(particle.rect.topleft == p.rect.topright and p!=particle  for p in neigbours):
                     stable=1
-                    if any(particle.rect.topright == p.rect.topleft and stable==1  and p!=particle   for p in grid.particle_list):
+                    if any(particle.rect.topright == p.rect.topleft and stable==1  and p!=particle   for p in neigbours):
                         stable=0
                         self.state = 0
                 
@@ -43,15 +46,9 @@ class Particle():
                 
             # particle inside
             if self.rect.topleft == particle.rect.topleft and particle!=self and particle.state == 0:
-                self.rect.y -= grid.cell_size
-                
+                self.rect.y -= grid.cell_size            
+        
            
-                
-    
-                
-            
-            
-                
           
         #grid bounderies      
         if self.rect.bottom == grid.row_number * grid.cell_size:
@@ -64,17 +61,29 @@ class Particle():
         elif stable == 1:
             self.rect.x += grid.cell_size
             
-            
         if self.state == 1:
             self.rect.y += grid.cell_size
             
-        
-             
             
         
+            
+        grid.update_spatial_hash(self)
+            
+        
+             
+    def get_neighbours(self, grid):
+        neighbours = []
+        for dx in [-1,0,1]:
+            for dy in [-1,0,1]:
+                neighbours.extend(grid.spatial_hash[self.cell_index[0] + dx, self.cell_index[1] + dy])
+        return neighbours
+        
+    
     
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
+        
+        
         
         
     

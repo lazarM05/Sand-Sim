@@ -28,32 +28,33 @@ while running:
             
             if event.key == pygame.K_SPACE:
                 space=True
+            if event.key == pygame.K_z:
+                
+                for cell in grid.cell_list:
+                    mouse_pos = pygame.mouse.get_pos()
+                    if cell.rect.collidepoint(mouse_pos):
+                        grid.add_particle(Particle(cell.rect.x, cell.rect.y, 0 , cell.cell_size))
+                        print (len(grid.particle_list))
                 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 space=False
+            
                 
         
                 
     if space:
         for cell in grid.cell_list:
-                    
-                    mouse_pos = pygame.mouse.get_pos()
-                    
-                    if cell.rect.collidepoint(mouse_pos):
-                        
-                        grid.particle_list.append(Particle(cell.rect.x, cell.rect.y, 0 , cell.cell_size))
-                        print (len(grid.particle_list))
+            mouse_pos = pygame.mouse.get_pos()
+            if cell.rect.collidepoint(mouse_pos):
+                
+                #add particle to Grid particle list
+                grid.add_particle(Particle(cell.rect.x, cell.rect.y, 0 , cell.cell_size))
+                print (len(grid.particle_list))
 
 
 
-
-
-
-
-
-
-
+   
     screen.fill((0,0,0))
     grid.draw(screen)
     

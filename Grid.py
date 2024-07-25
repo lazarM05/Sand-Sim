@@ -2,8 +2,7 @@ import pygame
 import sys
 
 from Cell import Cell
-
-
+from collections import defaultdict
 
 
 
@@ -19,16 +18,31 @@ class Grid():
         
         self.cell_list = []
         self.particle_list=[]
+        self.spatial_hash = defaultdict(list)
         
         
-        col = 0
-        while col < self.col_number:
-            row = 0
-            while row < self.row_number:
+        for col in range(self.col_number):
+            for row in range(self.row_number):
                 self.cell_list.append(Cell(col,row,cell_size))
-                row += 1
-            col += 1
             
+            
+            
+            
+            
+    def add_particle(self,particle):
+        self.particle_list.append(particle)
+        cell_index = (particle.rect.x // self.cell_size, particle.rect.y // self.cell_size)
+        self.spatial_hash[cell_index].append(particle)
+        
+        
+    def update_spatial_hash(self, particle):
+        new_cell_index = (particle.rect.x // self.cell_size,  particle.rect.y // self.cell_size)
+        if new_cell_index != particle.cell_index:
+            self.spatial_hash[particle.cell_index].remove(particle)
+            self.spatial_hash[new_cell_index].append(particle)
+            particle.cell_index = new_cell_index
+        
+        
             
     def draw(self, screen):
         for cell in self.cell_list:
