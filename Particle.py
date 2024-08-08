@@ -4,15 +4,17 @@ import sys
 
 class Particle():
     
-    def __init__(self, x,y, size=10):
+    def __init__(self,x ,y, size=10, type = None, state =""):
         
+        self.type = type
+        self.state = state
+
         self.size = size
         self.rect = pygame.Rect(x,y,size,size)
         self.cell_index = (x//size, y//size)
         
         self.color = (100,100,100) # default
     
-        self.solid = True
     
     
     def update(self, grid):

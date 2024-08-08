@@ -1,11 +1,14 @@
 import pygame
 import sys
 
+from Particle import Particle
 
-class Sand():
+
+class Sand(Particle):
 
     def __init__(self, x,y, size=10):
         
+        super().__init__(x,y, size)
         self.gravity = 1
             
         self.size = size
@@ -13,7 +16,9 @@ class Sand():
         
         self.cell_index = (x//size, y//size)
         
-        
+        self.type = Sand
+        self.state = "solid"
+
         self.color = (255,140,0) # sand
     
     

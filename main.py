@@ -32,7 +32,7 @@ while running:
             
             if event.key == pygame.K_SPACE:
                 space=True
-            if event.key == pygame.K_z:
+            if event.key == pygame.K_x:
                 
                 for cell in grid.cell_list:
                     mouse_pos = pygame.mouse.get_pos()
