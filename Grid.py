@@ -42,6 +42,21 @@ class Grid():
             self.spatial_hash[new_cell_index].append(particle)
             particle.cell_index = new_cell_index
         
+
+
+    def delete_particle(self,particle):
+        # Remove from spatial hash
+        cell_index = (particle.rect.x // self.cell_size, particle.rect.y // self.cell_size)
+        if particle in self.spatial_hash[cell_index]:
+            self.spatial_hash[cell_index].remove(particle)
+
+        # Remove from particle list
+        if particle in self.particle_list:
+            self.particle_list.remove(particle)
+
+        # If needed, perform additional cleanup
+        del particle
+        
         
             
     def draw(self, screen):
